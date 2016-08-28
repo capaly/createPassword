@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>JS-Create Random Password</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div><h1>Details:</h1>
+            <h3>10 tekens lang<br>
+
+                moet minstens 1 kleine letter en 1 hoofdletter hebben<br>
+
+                moet cijfers bevatten<br>
+
+mag niet de combinatie "123" bevatten</h3>
+            <div id="result"><h3>Automatisch aangemaakt:</h3><p>Result: </p></div>
+            
+        </div>
+        <h3>Gewenste wachtwoord. </h3>
+        <p>Moet bevatten: minstens 1 hoofdletter, minstens 1 kleine letter, minstens 1 cijfer, geen 123 patroon, minstens 10 karakters lang.</p>
+        <input type="text" id="fldpassword" maxlength="10"><input type="submit" value="verstuur" id="button" onclick="checkpassword()">
+        
+        <div id="controle"> </div>
+       
+<script>
+    function checkpassword(){              
+        var controlediv = document.getElementById('controle');
+        controlediv.innerHTML = "<p><h3>Via formulier:</h3></p>";
+        var createdPassword = document.getElementById('fldpassword').value;
+        //check length
+        var lenPassword = document.getElementById('fldpassword').value.length; 
+        var lenControle=0, kleinControle=0, hoofdControle=0, patroonControle=0, spatiesControle=0, cijferControle=0;
+        //controle lengte
+        if (lenPassword < 10){
+           controlediv.innerHTML = controlediv.innerHTML + "Het wachtwoord is niet lang genoeg. Probeer opnieuw.<br>";                   
+        }else{
+            lenControle=1;
+        }
+        //check kleine letter           
+        var letterKlein = createdPassword.replace(/[^A-Z]/g, "").length;
+        if (letterKlein == 0){
+            controlediv.innerHTML = controlediv.innerHTML + "Het wachtwoord bevat geen hoofdletter. Probeer opnieuw.<br>";     
+        }else{
+            kleinControle=1;
+        }
+        //check hoofdletter
+        var hoofdLetter = createdPassword.replace(/[^a-z]/g, "").length;
+        if (hoofdLetter == 0){
+            controlediv.innerHTML = controlediv.innerHTML + "Het wachtwoord bevat geen kleine letter. Probeer opnieuw.<br>"; 
+        }else{
+         hoofdControle=1;
+        }
+        //check op een nummer
+        var bevatCijfer = createdPassword.replace(/[^0-9]/g, "").length;
+         if (bevatCijfer == 0){
+            controlediv.innerHTML = controlediv.innerHTML + "Het wachtwoord bevat geen cijfer. Probeer opnieuw.<br>"; 
+        }else{
+            cijferControle=1;
+        }
+        //check 123 patroon
+        checkString="123";
+        check123 = createdPassword.indexOf(checkString) !== -1;
+        if (check123 == true){
+            controlediv.innerHTML = controlediv.innerHTML + "Het wachtwoord mag niet het patroon '123' bevatten. Probeer opnieuw.<br>"; 
+        }else{
+            patroonControle=1;
+        }
+        //check voor spaties
+        if(createdPassword.indexOf(' ') >= 0){
+             controlediv.innerHTML = controlediv.innerHTML + "Het wachtwoord mag geen spaties bevatten. Probeer opnieuw.<br>"; 
+        }else{
+            spatiesControle=1;
+        }
+        if (lenControle==1 && kleinControle==1 && hoofdControle==1 && patroonControle==1 && spatiesControle==1 && cijferControle==1){
+             controlediv.innerHTML = controlediv.innerHTML + "Het ingevoerde wachtwoord <strong>"+createdPassword+"</strong> voldoet aan opgegeven parameters.<br>"; 
+        }
+        }
+
+//automatisch aangemaakt
+var textOnly = "";
+var numOnly="";
+var possibleText = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+var possibleNum = "0123456789";
+
+for( var i=0; i < 5; i++ ){
+    textOnly += possibleText.charAt(Math.floor(Math.random() * possibleText.length));
+    numOnly += possibleNum.charAt(Math.floor(Math.random() * possibleNum.length));
+}
+//check for capital letter
+checkCap="";
+checkNoCap="";
+check123="";
+//controleer of er een hoofdletter wordt gevonden
+checkCap = textOnly.replace(/[^A-Z]/g, "").length;
+//controleer of er een kleine letter wordt gevonden
+checkNoCap = textOnly.replace(/[^a-z]/g, "").length;
+
+if (checkCap == 0){
+    //maak van de eerste letter een hoofdletter
+    textOnly =textOnly.charAt(0).toUpperCase() + textOnly.slice(1);
+}
+if (checkNoCap == 0){
+    //maak van de eerste letter een hoofdletter
+    textOnly =textOnly.charAt(0).toLowerCase() + textOnly.slice(2);
+}
+//if not found returns false
+checkString="123";   
+check123 = numOnly.indexOf(checkString) !== -1;
+if (check123 == true){
+    numOnly=numOnly.replace('123', "231");
+}
+
+var div = document.getElementById('result');
+div.innerHTML = div.innerHTML + "<p>aantal gevonden hoofdletters: "+checkCap + "<br> aantal gevonden kleine letters: "+checkNoCap+"<br>Check 123: "+check123+"<br> <strong>Password:</strong>"+  (textOnly += numOnly)+"</p>";
+</script>
+</body>
+</html>
